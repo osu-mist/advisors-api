@@ -46,15 +46,12 @@ definitions:
       firstName:
         type: string
         description: First name of the advisor.
-      termCodeEff:
+      effectiveTermCode:
         type: string
-        description: The effective term code.
-      advrCode:
+      advisorTypeCode:
         type: string
-        description: Advisor type code.
-      primIndicator:
+      primaryIndicator:
         type: boolean
-        description: Primary indicator
 
   Links:
     properties:
@@ -81,7 +78,6 @@ definitions:
   ResourceObject:
     properties:
       id:
-        description: "Pidm for the advisor."
         type: string
       type:
         description: "Resource type: advisor"
