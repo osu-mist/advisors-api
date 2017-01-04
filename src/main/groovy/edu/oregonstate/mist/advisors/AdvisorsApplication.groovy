@@ -1,6 +1,7 @@
 package edu.oregonstate.mist.webapiskeleton
 
 import edu.oregonstate.mist.advisors.AdvisorsConfiguration
+import edu.oregonstate.mist.advisors.db.AdvisorDAO
 import edu.oregonstate.mist.advisors.health.AdvisorsHealthCheck
 import edu.oregonstate.mist.advisors.resources.AdvisorsResource
 import edu.oregonstate.mist.api.BuildInfoManager
@@ -16,8 +17,10 @@ import io.dropwizard.Application
 import io.dropwizard.auth.AuthDynamicFeature
 import io.dropwizard.auth.AuthValueFactoryProvider
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter
+import io.dropwizard.jdbi.DBIFactory
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
+import org.skife.jdbi.v2.DBI
 
 /**
  * Main application class.
@@ -60,7 +63,11 @@ class AdvisorsApplication extends Application<AdvisorsConfiguration> {
         BuildInfoManager buildInfoManager = new BuildInfoManager()
         registerAppManagerLogic(environment, buildInfoManager)
 
-        AdvisorsHealthCheck healthCheck = new AdvisorsHealthCheck()
+        DBIFactory factory = new DBIFactory()
+        DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(),"jdbi")
+        AdvisorDAO advisorDAO = jdbi.onDemand(AdvisorDAO.class)
+
+        AdvisorsHealthCheck healthCheck = new AdvisorsHealthCheck(advisorDAO)
         environment.healthChecks().register("advisorsHealthCheck", healthCheck)
 
         environment.jersey().register(new InfoResource(buildInfoManager.getInfo()))

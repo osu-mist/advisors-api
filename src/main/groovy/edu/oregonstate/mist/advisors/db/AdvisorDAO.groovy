@@ -1,5 +1,6 @@
 package edu.oregonstate.mist.advisors.db
 
+import edu.oregonstate.mist.advisors.mapper.AdvisorMapper
 import org.skife.jdbi.v2.sqlobject.Bind
 import org.skife.jdbi.v2.sqlobject.SqlQuery
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper
@@ -11,6 +12,8 @@ interface AdvisorDAO extends Closeable {
 
     @SqlQuery("SELECT 1 FROM dual")
     Integer checkHealth()
+
+
 
     @Override
     void close()
