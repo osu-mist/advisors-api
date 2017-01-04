@@ -19,5 +19,5 @@ class ResultObject {
      *
      * @required
      */
-    def data
+    def data = []
 }

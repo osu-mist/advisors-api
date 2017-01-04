@@ -71,7 +71,7 @@ class AdvisorsApplication extends Application<AdvisorsConfiguration> {
         environment.healthChecks().register("advisorsHealthCheck", healthCheck)
 
         environment.jersey().register(new InfoResource(buildInfoManager.getInfo()))
-        environment.jersey().register(new AdvisorsResource())
+        environment.jersey().register(new AdvisorsResource(advisorDAO))
         environment.jersey().register(new AuthDynamicFeature(
                 new BasicCredentialAuthFilter.Builder<AuthenticatedUser>()
                 .setAuthenticator(new BasicAuthenticator(configuration.getCredentialsList()))
