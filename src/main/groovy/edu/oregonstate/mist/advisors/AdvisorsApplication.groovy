@@ -1,5 +1,9 @@
 package edu.oregonstate.mist.webapiskeleton
 
+import edu.oregonstate.mist.advisors.AdvisorsConfiguration
+import edu.oregonstate.mist.advisors.db.AdvisorDAO
+import edu.oregonstate.mist.advisors.health.AdvisorsHealthCheck
+import edu.oregonstate.mist.advisors.resources.AdvisorsResource
 import edu.oregonstate.mist.api.BuildInfoManager
 import edu.oregonstate.mist.api.Configuration
 import edu.oregonstate.mist.api.Resource
@@ -13,20 +17,22 @@ import io.dropwizard.Application
 import io.dropwizard.auth.AuthDynamicFeature
 import io.dropwizard.auth.AuthValueFactoryProvider
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter
+import io.dropwizard.jdbi.DBIFactory
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
+import org.skife.jdbi.v2.DBI
 
 /**
  * Main application class.
  */
-class SkeletonApplication extends Application<Configuration> {
+class AdvisorsApplication extends Application<AdvisorsConfiguration> {
     /**
      * Initializes application bootstrap.
      *
      * @param bootstrap
      */
     @Override
-    public void initialize(Bootstrap<Configuration> bootstrap) {}
+    public void initialize(Bootstrap<AdvisorsConfiguration> bootstrap) {}
 
     /**
      * Registers lifecycle managers and Jersey exception mappers
@@ -52,12 +58,20 @@ class SkeletonApplication extends Application<Configuration> {
      * @param environment
      */
     @Override
-    public void run(Configuration configuration, Environment environment) {
+    public void run(AdvisorsConfiguration configuration, Environment environment) {
         Resource.loadProperties()
         BuildInfoManager buildInfoManager = new BuildInfoManager()
         registerAppManagerLogic(environment, buildInfoManager)
 
+        DBIFactory factory = new DBIFactory()
+        DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(),"jdbi")
+        AdvisorDAO advisorDAO = jdbi.onDemand(AdvisorDAO.class)
+
+        AdvisorsHealthCheck healthCheck = new AdvisorsHealthCheck(advisorDAO)
+        environment.healthChecks().register("advisorsHealthCheck", healthCheck)
+
         environment.jersey().register(new InfoResource(buildInfoManager.getInfo()))
+        environment.jersey().register(new AdvisorsResource(advisorDAO))
         environment.jersey().register(new AuthDynamicFeature(
                 new BasicCredentialAuthFilter.Builder<AuthenticatedUser>()
                 .setAuthenticator(new BasicAuthenticator(configuration.getCredentialsList()))
@@ -75,6 +89,6 @@ class SkeletonApplication extends Application<Configuration> {
      * @throws Exception
      */
     public static void main(String[] arguments) throws Exception {
-        new SkeletonApplication().run(arguments)
+        new AdvisorsApplication().run(arguments)
     }
 }
