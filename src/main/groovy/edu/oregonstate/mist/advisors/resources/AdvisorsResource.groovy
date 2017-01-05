@@ -24,22 +24,21 @@ class AdvisorsResource extends Resource {
     }
 
     @GET
-    Response getAdvisors(@Auth AuthenticatedUser _, @QueryParam('osuid') String osuid,
-                         @QueryParam('onid') String onid) {
-
-        if (onid && osuid) {
-            return badRequest("Please specify either the osuid or the onid, but not both.").build()
-        }
-        if (!onid && !osuid) {
+    /**
+     * Returns the primary advisor for a given student id
+     *
+     * @param String id         Either an onid username or osu id.
+     */
+    Response getPrimaryAdvisor(@Auth AuthenticatedUser _, @QueryParam('id') String id) {
+        if (!id) {
             return badRequest("Please specify either the osuid or the onid.").build()
         }
 
-        def id = onid ?: osuid
         def attributes = advisorDAO.getAdvisors(id)
         def resultObject = new ResultObject()
         attributes.each {
             resultObject.data += new ResourceObject(
-                    id:         1, //@todo: what do we use for an id?
+                    id:         it.hashCode(),
                     type:       'advisor',
                     attributes: it
             )
