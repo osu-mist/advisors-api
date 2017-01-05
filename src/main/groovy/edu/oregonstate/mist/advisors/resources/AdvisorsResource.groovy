@@ -34,6 +34,7 @@ class AdvisorsResource extends Resource {
             return badRequest("Please specify either the osuid or the onid.").build()
         }
 
+        // validation - if the id is not valid the getAdvisors id will not return any data
         def attributes = advisorDAO.getAdvisors(id)
         def resultObject = new ResultObject()
         attributes.each {
@@ -44,7 +45,6 @@ class AdvisorsResource extends Resource {
             )
         }
 
-        //@todo: validation
         ok(resultObject).build()
     }
 }

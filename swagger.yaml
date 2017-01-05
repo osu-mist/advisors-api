@@ -14,15 +14,10 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: osuID
-          description: "OSU ID of a student"
+          name: id
+          description: "OSU ID or ONID of a student"
           required: false
           type: integer
-        - in: query
-          name: onid
-          description: "OSU onid of a student"
-          required: false
-          type: string
       responses:
         "200":
           description: "Successful response"
