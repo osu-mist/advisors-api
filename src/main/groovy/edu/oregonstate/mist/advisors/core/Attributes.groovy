@@ -3,6 +3,7 @@ package edu.oregonstate.mist.advisors.core
 class Attributes {
     String lastName
     String firstName
+    String username
     String effectiveTermCode
     String advisorTypeCode
     Boolean primary

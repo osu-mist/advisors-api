@@ -15,6 +15,7 @@ class AdvisorMapper implements ResultSetMapper<Attributes> {
         new Attributes(
                 lastName:           rs.getString(AbstractAdvisorDAO.mapperLastNameColumn),
                 firstName:          rs.getString(AbstractAdvisorDAO.mapperFirstNameColumn),
+                username:           rs.getString(AbstractAdvisorDAO.mapperLoginNameColumn),
                 effectiveTermCode:  rs.getString(AbstractAdvisorDAO.mapperEffectiveTermCodeColumn),
                 advisorTypeCode:    rs.getString(AbstractAdvisorDAO.mapperAdvisorTypeCodeColumn),
                 primary:            primary
