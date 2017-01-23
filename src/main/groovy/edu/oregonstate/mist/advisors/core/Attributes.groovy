@@ -16,6 +16,6 @@ class Attributes {
         result = 31 * result + (advisorTypeCode != null ? advisorTypeCode.hashCode() : 0)
         result = 31 * result + (primary != null ? primary.hashCode() : 0)
 
-        result
+        Math.abs(result)
     }
 }
