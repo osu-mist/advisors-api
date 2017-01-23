@@ -16,8 +16,8 @@ paths:
         - in: query
           name: id
           description: "OSU ID or ONID of a student"
-          required: false
-          type: integer
+          required: true
+          type: string
       responses:
         "200":
           description: "Successful response"
@@ -41,6 +41,9 @@ definitions:
       firstName:
         type: string
         description: First name of the advisor.
+      username:
+        type: string
+        description: ONID username of advisor
       effectiveTermCode:
         type: string
       advisorTypeCode:
