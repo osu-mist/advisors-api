@@ -24,6 +24,7 @@ frisby.create('Get access token')
     testGetByID();
     testGetByONID();
     testGetInvalidID();
+    testJSONTypes();
   })
 .toss();
 
@@ -51,6 +52,32 @@ function testGetByID() {
 
 function testGetInvalidID() {
   testGet( '?id=' + config.invalid, 'with invalid id', 200);
+}
+
+function testJSONTypes() {
+  frisby.create('Get advisors: json types')
+    .get(baseUrl + '?id=' + config.id)
+    //Verifying expected outcomes
+    .timeout(10000)
+    .expectStatus(200)
+    .expectHeaderContains('content-type', 'application/json')
+    .expectJSONTypes('data.*', {
+      id: String,
+      type: String,
+      attributes: {
+        lastName: String,
+        firstName: String,
+        username: String,
+        effectiveTermCode: String,
+        advisorTypeCode: String,
+        primary: Boolean
+      }
+    })
+    .expectJSONTypes({
+      links: Object,
+      data: Array
+    })
+  .toss();
 }
 
 function testGet(params, message, code) {
