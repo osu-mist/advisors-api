@@ -1,0 +1,15 @@
+{
+  "hostname": "https://example.com/",
+  "version": "v1",
+
+  "api": "/resource/",
+
+  "token_endpoint": "/token",
+
+  "client_id": "secret",
+  "client_secret": "sauce",
+
+  "id": "123456789",
+  "onid": "beavers",
+  "invalid": "ducks"
+}
