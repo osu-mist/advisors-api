@@ -2,7 +2,6 @@ swagger: '2.0'
 info:
   title: Advisors API
   version: "0.0.1"
-
 paths:
   /advisors:
     get:
@@ -18,6 +17,7 @@ paths:
           description: "OSU ID or ONID of a student"
           required: true
           type: string
+        - $ref: '#/parameters/authorization'
       responses:
         "200":
           description: "Successful response"
@@ -31,7 +31,13 @@ paths:
           description: "Internal Server Error"
           schema:
             $ref: "#/definitions/Errors"
-
+parameters:
+  authorization:
+    name: Authorization
+    in: header
+    type: string
+    required: true
+    description: '"Bearer [token]" where [token] is your OAuth2 access token'
 definitions:
   Attributes:
     properties:
