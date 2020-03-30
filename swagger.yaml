@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: Advisors API
-  description: Get list of academic advisors for a student, using osu id or onid.
+  description: Get primary advisors for a student.
   version: "0.0.1"
 host: api.oregonstate.edu
 schemes:
